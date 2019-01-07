@@ -1,0 +1,249 @@
+<apex:page >
+    <!--<apex:page StandardController="Quote" extensions="OpportunityProductSellPriceController" doctype="HTML-5.0" sidebar="false">
+    
+    <apex:stylesheet value="{!URLFOR($Resource.BootTechnomile)}" /> 
+    <apex:stylesheet value="{!URLFOR($Resource.BootstrapTable,'bootstrap-table.css')}" />
+    <apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.css" />
+    
+    <apex:includeScript value="{!URLFOR($Resource.BootstrapTable,'jquery.min.js')}" /> 
+    <apex:includeScript value="{!URLFOR($Resource.BootstrapTable,'bootstrap.min.js')}" />
+    <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/bootstrap-table.js" />
+    <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.8.1/locale/bootstrap-table-en-US.min.js" />          
+    <head>
+        <title>Bootstrap Example</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+        <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  
+        <style>
+            .technomile .container {
+             background-color: #f7f7f7;
+             // border: 2px solid #003F77;
+             border-radius: 4px;
+             //width: 100%;
+            }
+          
+            .technomile .fixed-table-pagination .page-list {
+                display: none;
+            }
+                
+            h2{
+                font-size:15px;
+            }
+            .sidebarCell, #sidebarDiv {
+                 width: 198px;
+                 
+            }
+            body{
+                  padding-top: 0px;
+            }   
+            .selectedProduct{
+            /*width: 100%;*/
+            padding: 5px;
+            }
+            .productHead{
+               font-weight: normal;
+               padding: 13px;
+            }
+        </style>
+    </head>
+    
+    <script>
+        
+        function checkMaster(flag, clsName){
+            var checkboxes = document.getElementsByClassName(clsName);
+            console.log(checkboxes);
+            for(var i = 0; i < checkboxes.length; i++){
+                 checkboxes[i].checked = flag;
+            }   
+        }
+        
+        function unCheckMaster(){
+            $(".masterchk2").prop('checked', true); 
+            $(".masterchk2").removeAttr('checked');
+            console.log('uncheck master :::'+ $(".masterchk2").removeAttr("checked") +'this:::'+ $(".masterchk2").prop('checked', false));
+            //alert('Hiiii');
+        }
+        
+        function toggle(sDivId) {
+                //var oDiv = $('[id$="sDivId"]');
+                $('[id$="sDivId"]').style.display = (oDiv.style.display == "none") ? "block" : "none";
+        }
+        
+        function checkproduct()
+        { 
+            var anyBoxesChecked = false;
+            $('.childchk1').each(function() {
+                if ($(this).prop( "checked" )) {
+                    anyBoxesChecked = true;
+                }
+            });
+            if (anyBoxesChecked) {
+                alert("Your selection on this page will be lost ");
+            return false;
+            }  
+        }    
+    </script>
+    
+    <script>
+        function pickListpannel(isOn)
+        {
+            if(isOn){   
+                $('[id$="outerPanelId"]').hide(); 
+                $('[id$="searchPgBlockId"]').hide();
+                
+            }
+            else{
+                //$('[id$="selProductid"]').show(); 
+                        
+            }
+        }    
+    </script>
+    
+    <script type="text/javascript">
+        function remoteSellPrice(productId,priceBookName,index,valueofInput)
+        {
+            //console.log('we are in remote-'+'st::::'+productId +'priceBookName::'+priceBookName);
+            var tempcls = "textquant"+index;
+            var selectValue = valueofInput;
+            if(selectValue  < 0)
+            {
+                alert('Quantity never be less than zero');
+            }
+            
+            Visualforce.remoting.Manager.invokeAction('{!$RemoteAction.OpportunityProductSellPriceController.sellpriceMatrixList}',selectValue,productId,priceBookName, 
+            function(result, event)
+            {
+                //console.log('result:::::'+result);
+                if(result != null)
+                {
+                    initMap(result,index);
+                }
+                else if (event.type === 'exception') 
+                {
+                  alert('Exception Here');
+                } 
+             }
+            );
+        }
+        
+        function initMap(result,index)
+        {
+             if(result !='')
+             {
+                 //console.log('salesPrice'+result[0].Sale_Price__c);
+                 var tempcalss = "text2"+index;
+                 //console.log('tempcalss'+tempcalss);
+                 $('.'+tempcalss).val(result[0].Sale_Price__c);
+             }
+             else
+             {
+                 alert('Sales Price is not defined for this product. Contact your admin to add this product');
+             }
+          
+        }       
+    </script>
+        
+    <div class="technomile">
+        <apex:form >
+            <apex:pageMessages />
+            <apex:outputpanel rendered="{!if(pricebookName ==null,true,false)}">
+                <apex:pageBlock id="pageId1" title="PriceBook">
+                    <span style="font-weight: normal;">Choose Price Book</span>
+                        <apex:selectList value="{!selectPriceBook}" size="1" style="margin-left: 1%;">
+                            <apex:selectOptions value="{!Items}"/>
+                        </apex:selectList>
+                        <br/>
+                        <br/>
+                        <div style="margin-left: 122px;width: 100%;displayinline-block;"><apex:commandButton value="Next" action="{!SelectedPriceBook}" Style="margin-left: 1%!important;font-size: 14px!important;"/></div>
+                </apex:pageBlock>
+            </apex:outputpanel>
+            
+            <apex:pageblock title="Find Products"  id="searchPgBlockId" rendered="{!if(productWrapperList.size <=0,false,true)}" >
+                <span Style="margin-left: 6%;font-size: 14px;" ><b>By Field Filter</b></span> 
+                <apex:selectList value="{!selectProductField}" size="1" style="margin-left: 1%;font-size: 15px;">
+                        <apex:selectOptions value="{!FieldName}"/>      
+                 </apex:selectList>
+                <apex:inputtext value="{!fiterFieldOfProduct }" style="margin-left: 1%;font-size: 13px"/>
+                <apex:commandButton value="Search" id="next" action="{!SelPriceBookNext}" style="margin-left: 1%;" onclick="checkproduct(),unCheckMaster()" />   
+            </apex:pageblock>
+            
+            <apex:outputPanel Id="outerPanelId" >
+                <apex:pageblock id="productTableId" title="Products">
+                     <apex:pageblocksection >
+                        <apex:outputPanel rendered="{!if(productWrapperList.size <=0,true,false)}" style="float:left">
+                            <apex:outputText value="No result found"></apex:outputText>
+                        </apex:outputPanel>
+                    </apex:pageblocksection>
+                    
+                    <apex:pageblocksection >
+                        <apex:outputpanel layout="block" id="panelId1" rendered="{!if(productWrapperList.size <=0,false,true)}"> 
+                            <div class="container"> 
+                                <div class="panel panel-primary">
+                                    <div class="panel-body">
+                                        <table id="table-Hidden" class="table table-striped table-bordered" data-toggle="table" data-pagination="true" data-page-list="[10, 20, 50, 100, 200]">
+                                            <thead>
+                                                <tr class="active">
+                                                    <th><input type="checkbox" class="masterchk2" onclick="checkMaster(this.checked,'childchk1')" /></th>
+                                                    <th   data-sortable="true">Product Name</th>
+                                                    <th   data-sortable="true">Part Number</th>
+                                                    <th   data-sortable="true">Description</th>   
+                                                </tr> 
+                                            </thead>
+                                            <tbody>
+                                                <apex:variable var="indCount" value="{!0}" />
+                                                <apex:repeat value="{!productWrapperList}" var="wrapprod">
+                                                    <tr data-index="{!indCount}">
+                                                        <td>
+                                                            <apex:inputCheckbox value="{!wrapprod.isCheck}" styleClass="childchk1"/>
+                                                        </td>
+                                                        <td>{!wrapprod.prod.Name} </td>
+                                                        <td>{!wrapprod.prod.ProductCode}</td>
+                                                        <td> {!wrapprod.prod.Description}</td> 
+                                                    </tr>
+                                                    <apex:variable value="{!indCount+1}" var="indCount"/> 
+                                                </apex:repeat>
+                                            </tbody>
+                                        </table>
+                                    </div>    
+                                </div>
+                            </div>     
+                        </apex:outputpanel>
+                    </apex:pageblocksection>
+
+                    <apex:pageBlockButtons >
+                        <apex:commandButton action="{!selectedProduct}" value="Select" id="selectBtn" onclick="pickListpannel(true);" rerender="selProductid" style="margin-left: 23%;margin-top: 2%;" rendered="{!if(productWrapperList.size <=0,false,true)}"/>
+                        <apex:commandButton value="Cancel" action="{!cancelProduct}" reRender="none" style="margin-left: 1%;margin-top: 2%;"/>                   
+                    </apex:pageBlockButtons>
+                </apex:pageblock> 
+            </apex:outputPanel>
+
+            <apex:outputPanel Id="selProductid"  layout="block">
+                <apex:pageBlock rendered="{!if(productToSelectedList.size <=0,false,true)}">
+                    <table>
+                        <tr>
+                            <th class="productHead">Product Name</th>
+                            <th class="productHead">Quantity</th>
+                            <th class="productHead"> SalesPrice</th>
+                        </tr>
+                        <apex:variable var="index" value="{!1}"/>
+                        <apex:repeat value="{!productToSelectedList}" var="ptab">
+                            <tr>
+                                <td class="selectedProduct"><apex:outputfield value="{!ptab.produ.Name}"/></td>&nbsp;
+                                <td class="selectedProduct"><apex:input type="number" value="{!ptab.quantity}" id="txt" styleClass="textquant{!index}" onblur="remoteSellPrice('{!ptab.produ.Id}','{!ptab.selPriceBook}',{!index},this.value)"/></td>
+                                <td class="selectedProduct"><apex:input type="number" value="{!ptab.salesprice}" id="txt2" styleClass="text2{!index}" style="margin-left: 4%;"/></td>
+                            </tr>
+                            <apex:variable value="{!index+1}" var="index"/>
+                        </apex:repeat>
+                    </table>
+                    <apex:pageBlockButtons >
+                        <apex:commandButton value="Save" action="{!saveRecord}" reRender="none" style="margin-left: 23%;margin-top: 1%;"/>
+                        <apex:commandButton value="Cancel" action="{!cancelRecord}" reRender="none" style="margin-left: 1%;margin-top: 1%;"/>
+                    </apex:pageBlockButtons>
+                </apex:pageBlock>
+            </apex:outputPanel>
+        </apex:form>
+    </div>-->
+</apex:page>

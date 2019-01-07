@@ -1,0 +1,186 @@
+<apex:page >
+ <!-- <apex:page StandardController="Opportunity__c" extensions="NewFeeProposalController" doctype="HTML-5.0">
+    <script src="/soap/ajax/15.0/connection.js" type="text/javascript"></script>
+    <script src="/soap/ajax/15.0/apex.js" type="text/javascript"></script>
+    <script>
+        function quantValid(valueofInput,index)
+        {
+            var tempcls = "text"+index;
+            var selectValue = valueofInput;
+            //alert('tempcls '+tempcls  +'selectValue '+selectValue );
+            if(selectValue  < 0)
+            {
+                alert('sales price never be less than zero');
+            }  
+        }
+    </script>
+    
+    <style>
+        .ui-state-active{
+        
+        border: 1px solid #fbd850;
+            background: #ffffff;
+            font-weight: bold;
+            color: #eb8f00;
+        
+        }
+        
+        .BlockTable{width:60%!important; margin:0 auto}
+        .BlockTable th{
+        background: #099ad6!important;
+    color: #fff!important;
+    padding: 8px 10px!important;
+    font-weight: bold!important;
+    font-size: 13px!important;}
+    
+        .BlockTable td{padding:8px 10px!important}
+        .BlockTable input{ border:1px solid #eee; width:100%; padding:6px 10px;box-sizing: border-box;}
+    </style>
+     <apex:form >         
+        <apex:pageBlock id="table" >
+        <apex:pageMessages id="pagemsgId"/>
+        <apex:variable value="{!0}" var="indCount"/>
+        <apex:variable var="index" value="{!1}"/>
+            <apex:pageBlockTable value="{!ProposalLineItems}" var="sec" styleClass="BlockTable">
+                {!sec.description}
+                {!sec.salesprice}
+                <apex:column headerValue="Line Item Description" styleClass="ui-state-active">
+                   <apex:input type="text" id="Desc" value="{!sec.description}"/>
+                                     
+                 </apex:column>
+             
+                
+                <apex:column headerValue="Sales Price" styleClass="ui-state-active">
+                <apex:input type="number" id="Price" value="{!sec.salesprice}" styleClass="text{!index}" onclick="quantValid('{!sec.salesprice}',{!index})" required="true"/>
+                     <!--<apex:input  type="Number" id="Price" value="{!sec.salesprice}"  />-->
+              <!--  </apex:column>-->
+                
+               <!-- <apex:variable value="{!index+1}" var="index"/>-->
+               <!-- <apex:param name="index" value="{!indCount}"/> 
+                         <apex:variable value="{!indCount+1}" var="indCount"/>
+               <!-- <apex:column headerValue="Action">
+                    <apex:commandLink action="{!removeRow}" immediate="true" reRender="table">
+                        <img src="{!$Resource.RemoveIcon}" width= "21"/>
+                        <apex:param name="index" value="{!indCount}"/> 
+                         <apex:variable value="{!indCount+1}" var="indCount"/>
+                    </apex:commandLink>
+                    
+                </apex:column>-->
+                 
+           <!-- </apex:pageBlockTable> <br/>           
+            <center>
+                <apex:commandButton value="Add Row" action="{!addRow}" reRender="table"/>
+                <apex:commandButton value="Save" action="{!SavePage}" reRender="pagemsgId"/>
+                <apex:commandButton value="Cancel" action="{!Cancel}"/>
+            </center>
+        </apex:pageBlock>
+         <apex:outputPanel >
+            <apex:pageMessages />
+      </apex:outputPanel>  
+    </apex:form>
+</apex:page>-->
+<!--<apex:page StandardController="Opportunity__c" extensions="NewFeeProposalController" doctype="HTML-5.0">
+    <script src="/soap/ajax/15.0/connection.js" type="text/javascript"></script>
+    <script src="/soap/ajax/15.0/apex.js" type="text/javascript"></script>
+    <script>
+        function quantValid(valueofInput,index)
+        {
+            var tempcls = "text"+index;
+            var selectValue = valueofInput;
+            //alert('tempcls '+tempcls  +'selectValue '+selectValue );
+            if(selectValue  < 0)
+            {
+                alert('sales price never be less than zero');
+            }  
+        }
+    </script>
+    
+    <style>
+        .ui-state-active{
+        
+        border: 1px solid #fbd850;
+            background: #ffffff;
+            font-weight: bold;
+            color: #eb8f00;
+        
+        }
+        
+       .BlockTable{width:70%!important; margin:0 auto}    
+         //.BlockTable{width:60%!important; margin-left: 336px;}
+         .bPageBlock .detailList .dataCol{width:100%!important}
+         
+        .BlockTable th{
+        background: #099ad6!important;
+    color: #fff!important;
+    padding: 8px 10px!important;
+    font-weight: bold!important;
+    font-size: 13px!important;}
+    
+        .BlockTable td{padding:8px 10px!important}
+        .BlockTable input{ border:1px solid #eee; width:100%; padding:6px 10px;box-sizing: border-box;}
+    </style>
+     <apex:form >         
+        <apex:pageBlock id="table" >
+            <apex:pageMessages id="pagemsgId"/>
+            <apex:pageblockSection rendered="{!if(PropId == null,true,false)}" title="New Fee Proposal"  columns="2" >
+               <apex:inputText value="{!proposalName}"  label="Proposal Name" /> 
+               <apex:outputField value="{!OppRec.Name}"/>
+               <apex:outputField value="{!OppRec.Account__c}"/>
+               <apex:inputField value="{!proposal.Contact_Name__c}"/>
+               <apex:inputField value="{!proposal.TTStaff__c}"/>
+               <apex:inputField value="{!proposal.TT_PIC__c}"/>
+               <apex:inputField value="{!proposal.Submission_Date__c}"/>
+               <apex:inputField value="{!proposal.Expiration_Date__c}"/>   
+            </apex:pageblockSection>
+            
+            <apex:variable value="{!0}" var="indCount"/>
+            <apex:variable var="index" value="{!1}"/>
+            <apex:variable var="rowNum" value="{!0}"  />
+            <apex:pageBlockSection title="New Fee Proposal Line Items">
+                    <apex:pageBlockTable value="{!ProposalLineItems}" var="sec" styleClass="BlockTable" id="oppAdd" >  
+                        <apex:column headerValue="No." styleClass="ui-state-active">
+                            <apex:outputText value="{0,number, ###}" style="text-align:center;">   
+                                <apex:param value="{!rowNum+1}" />   
+                            </apex:outputText>
+                        </apex:column> 
+                        
+                        
+                        <apex:column headerValue="Line Item Description" styleClass="ui-state-active">
+                           <apex:input type="text" id="Desc" value="{!sec.description}"/>                   
+                         </apex:column>
+                     
+                        
+                        <apex:column headerValue="Sales Price" styleClass="ui-state-active">
+                            <apex:input type="text" id="Price" value="{!sec.salesprice}" styleClass="text{!index}" onclick="quantValid('{!sec.salesprice}',{!index})" required="true"/>
+                        </apex:column>  
+                        
+                        <apex:column headerValue="TT Office" styleClass="ui-state-active">
+                            <apex:inputField value="{!sec.pcLine.TT_Office__c}" style="padding: 5px 1px;border: 1px solid #eee;"/>
+                        </apex:column> 
+                        
+                         <apex:column headerValue="TT Practice" styleClass="ui-state-active">
+                            <apex:inputField value="{!sec.pcLine.TT_Practice__c}" style="padding: 5px 1px;border: 1px solid #eee;"/>
+                        </apex:column>  
+                                          
+                        <apex:column headerValue="Action" styleClass="ui-state-active">
+                            <apex:commandLink style="font-size:15px; font-weight:bold; text-align:center;color:red;" value="X" action="{!delRow}" reRender="table,oppAdd" rendered="{!rowNum>0}"  immediate="true">
+                               <apex:param value="{!rowNum}" name="index" />  
+                            </apex:commandLink>
+                               <apex:variable var="rowNum" value="{!rowNum+1}"/>
+                        </apex:column>
+                        
+                         
+                    </apex:pageBlockTable> <br/> 
+                </apex:pageBlockSection>
+                <div style="text-align:center">        
+                    <apex:commandButton value="Add Row" action="{!addRow}" reRender="table"/>
+                    <apex:commandButton value="Save" action="{!SavePage}" reRender="pagemsgId"/>
+                    <apex:commandButton value="Cancel" action="{!Cancel}"/>
+                </div>
+        </apex:pageBlock>
+         <apex:outputPanel >
+            <apex:pageMessages />
+      </apex:outputPanel>  
+    </apex:form>
+</apex:page>-->
+</apex:page>

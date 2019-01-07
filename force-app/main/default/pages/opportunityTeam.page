@@ -1,0 +1,71 @@
+<apex:page >
+  <!-- <apex:page StandardController="Opportunity__c" extensions="NewOpportunityTeamController" doctype="HTML-5.0">
+    <script src="/soap/ajax/15.0/connection.js" type="text/javascript"></script>
+    <script src="/soap/ajax/15.0/apex.js" type="text/javascript"></script>
+    <apex:sectionHeader subtitle="Add Opportunity Team Members to {!Opportunity__c.Name}"/>
+    <apex:pageMessage summary="Team members' access level for this opportunity(standard) may be greater than your organization's default opportunity(standard) access settings." severity="info" strength="3" />
+    <apex:pageMessages /><br></br>
+    
+    <style>
+        .BlockTable th{
+            background: #099ad6!important;
+            color: #fff!important;
+            padding: 8px 10px!important;
+            font-weight: bold!important;
+            font-size: 13px!important;}
+            
+          .infoM2 .msgIcon, .infoLarge
+          {
+            width: 16px;
+            height: 16px;
+            background-size: cover;}
+            
+            body .bPageTitle .pageTitleIcon {
+            margin-top: -3px;
+          }
+    </style>
+    <apex:form > 
+        <div id="divId" Style="width: 65%;">        
+            <apex:pageBlock id="table" >
+            <apex:variable value="{!0}" var="indCount"/>
+            <apex:variable var="index" value="{!1}"/>
+            <apex:pageBlockTable value="{!opportunityTeamlist}" var="sec">
+                <apex:column headerValue="User" styleClass="BlockTable">
+                   <apex:inputField id="ownId" value="{!sec.opp.User__c}" />                   
+                 </apex:column>
+             
+                <apex:column headerValue="Opportunity Access" styleClass="BlockTable ">
+                    <apex:selectList value="{!sec.selectOpportunityAccess}" size="1" 
+                            multiselect="false" id="opporId">
+                        <apex:selectOptions value="{!opportunityAccess}"/>    
+                    </apex:selectList>
+                </apex:column>
+                
+                 <apex:column headerValue="Conatct?" styleClass="BlockTable">
+                     <apex:inputField id="ConId" value="{!sec.opp.Staff__c}"  required="true"/>                    
+                 </apex:column>
+                 
+                 <apex:column headerValue="Team Role" styleClass="BlockTable">
+                     <apex:selectList value="{!sec.selectedTeamRole}" size="1" 
+                            multiselect="false" id="teamList" required="true">      
+                        <apex:selectOptions value="{!stagePicklistvalue}"/>   
+                    </apex:selectList>
+                 </apex:column>
+                 
+                 <apex:variable value="{!index+1}" var="index"/>
+                 <apex:param name="index" value="{!indCount}"/> 
+                 <apex:variable value="{!indCount+1}" var="indCount"/>    
+            </apex:pageBlockTable><br/> 
+            <apex:pageBlockButtons Style="width: 55%;">          
+                <apex:commandButton value="Add Row" action="{!addRow}" reRender="table"/>
+                <apex:commandButton value="Save" action="{!savePage}" />
+                <apex:commandButton value="Cancel" action="{!cancel}"/>
+            </apex:pageBlockButtons>
+            </apex:pageBlock>
+        </div>
+        <apex:outputPanel >
+            <apex:pageMessages />
+        </apex:outputPanel>  
+    </apex:form>
+</apex:page>-->
+</apex:page>

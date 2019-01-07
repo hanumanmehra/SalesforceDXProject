@@ -1,0 +1,89 @@
+<apex:page >
+ <!-- <apex:page StandardController="Lead" extensions="ConvertLeadController" doctype="HTML-5.0" standardStylesheets="true">
+     <apex:sectionHeader title="Convert Lead" subtitle="{!Lead.Name}"/>
+     Leads can be converted to accounts, contacts, opportunities, and followup tasks.<br/>
+     You should only convert a lead once you have identified it as qualified.<br/>
+     After this lead has been converted, it can no longer be viewed or edited as a lead, but can be viewed in lead reports.<br/><br/>
+
+    <style type="text/css">
+        input.hiddenInput {
+            width:0;
+            height:0;
+            border:0;
+            padding:0;
+            margin:0;
+        }
+        
+        .leadTab .tertiaryPalette, .individualPalette .leadBlock .tertiaryPalette, .layoutEdit .individualPalette .leadBlock .tertiaryPalette {
+        background-color: #faebd5;
+        border-color: #ebaf59;
+        color: black!important;
+    }
+    </style>
+    <apex:form >
+        <apex:pageBlock >
+            <apex:pageblockButtons >
+                <apex:commandButton value="Convert" action="{!convertLeadRecord}" reRender="none"/>
+                <apex:commandButton value="Cancel" action="{!cancelConvertLead}"  reRender="none"/>
+            </apex:pageblockButtons>
+            <apex:pageblockSection title="Convert Lead" collapsible="false" columns="1">
+                <!--<apex:outputLabel value="Record Owner: " style="font-weight:bold;"/> &nbsp;&nbsp;-->
+                <!--<apex:inputField value="{!currLead.OwnerId}" style="width: 0;"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-->
+         <!--       <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Record Owner" for="recordOwner" />
+                    <apex:inputField value="{!contactID.OwnerId}" id="recordOwner" />
+                </apex:pageBlockSectionItem>-->
+            <!-- Checkbox indicating whether to send an email to the owner -->    
+           <!-- <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Send Email to the Owner" for="sendOwnerEmail" />
+                <apex:inputCheckbox value="{!sendOwnerEmail}" id="sendOwnerEmail" />
+            </apex:pageBlockSectionItem>-->
+                
+          <!--  <apex:pageBlockSectionItem id="convertLeadAccountBlockSectionItem" >
+                <!-- Account Name picklist  -->
+              <!-- <apex:outputLabel value="Account Name" for="accountList" />
+                    <apex:outputPanel styleClass="requiredInput" id="block">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!selectedAccount}" size="1" 
+                            multiselect="false" id="accountList">
+                            
+                            <apex:actionSupport event="onchange" 
+                                action="{!accountChanged}" 
+                                rerender="opportunityName, ViewLink"
+                                 />     
+                            <apex:selectOptions value="{!accounts}"/>
+                            
+                        </apex:selectList>
+                        
+                        <!--  Account lookup to add existing accounts to the picklist -->
+                        <!--<apex:inputField styleClass="hiddenInput" 
+                        value="{!con.AccountId}" id="accountId" >
+                            
+                            <!-- When an account is looked up, it is added to the select list -->                            
+                           <!-- <apex:actionSupport event="onchange" 
+                                action="{!accountLookedUp}" 
+                                rerender="accountList, opportunityName"
+                                 />       
+                        </apex:inputField>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                 <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Opportunity Name" for="opportunity" />
+                    <apex:inputText id="opportunity" value="{!Company}" required="true" />
+                 </apex:pageBlockSectionItem>
+                 <!-- Converted Status -->
+               <!-- <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Converted Status" for="leadStatus" />
+                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList id="LeadStatusList" size="1" 
+                            value="{!currLead.Status}" multiselect="false" required="true">
+                            <apex:selectOptions value="{!LeadStatusOption}"/>
+                        </apex:selectList> 
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>  
+            </apex:pageblockSection>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>-->
+</apex:page>

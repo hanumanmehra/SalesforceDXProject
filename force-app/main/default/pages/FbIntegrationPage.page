@@ -1,0 +1,17 @@
+<apex:page controller="FbIntegration" showheader="True">
+    <apex:form >
+        <apex:pageblock Title="Login The FB">
+                <apex:pageBlockButtons >
+                    <apex:commandButton value="Log In"  action="{!authantication}"/>  
+              </apex:pageBlockButtons>
+             <!-- <apex:pageblocksection >
+                <apex:outputlabel value="UserName">
+                    <apex:InputText > </apex:InputText>
+                </apex:outputlabel>
+                <apex:outputlabel value="Password">
+                    <apex:InputText > </apex:InputText>
+                </apex:outputlabel>
+            </apex:pageblocksection>-->
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

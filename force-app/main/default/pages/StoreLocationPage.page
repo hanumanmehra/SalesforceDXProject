@@ -1,0 +1,225 @@
+<apex:page standardController="Store_Location__c" extensions="StoreLocationController">
+    <style>
+        html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+        }
+        #map {
+          height: 100%;
+        }
+    </style>
+    
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    
+     <apex:form >
+        <script>
+            $( document ).ready(function() {
+                 var stringvalue= "{!JSENCODE(stringofNear)}" ;
+                 //alert("hi -----"+stringvalue);   
+                 var st = stringvalue.split(";");
+                 console.log('st'+st);
+                 console.log('str'+st.length);
+                 checkMap(st);
+            });
+        </script>
+            
+        <apex:outputpanel id="frmId"> 
+            <div>
+                <apex:selectlist value="{!selectDistance}" size="1" style="margin-left: 6%;" >    
+                    <apex:selectoptions value="{!Items}"/>
+                    <apex:actionsupport event="onchange"  action="{!distance}"  rerender="frmId,labelId" oncomplete="myfunction()"/>
+                </apex:selectlist>
+            </div>  
+            
+            <script>
+                function myfunction() 
+                { 
+                    var stringvalue= "{!JSENCODE(stringofNear)}" ;
+                    //alert("hello -----"+stringvalue); 
+                    //console.log('selectDistance::'+{!selectDistance});
+                    var st = stringvalue.split(";");
+                    console.log('st'+st);
+                    console.log('str'+st.length);
+                    checkMap(st);
+                }
+                
+                
+                function checkMap(Stloc) 
+                {
+                    var selectDistance ='{!selectDistance}';
+                    //console.log('selectDistance ::'+selectDistance);
+                
+                    var zoom =13;
+                    
+                    if(selectDistance == 5)
+                    {
+                        zoom =11;
+                    }
+                    
+                    else if(selectDistance == 10)
+                    {
+                        zoom =10;
+                    }
+                    else if(selectDistance == 25)
+                    {
+                        zoom =9;
+                    }
+                    else if(selectDistance == 50)
+                    {
+                        zoom = 8;
+                    }
+                    else if(selectDistance == 100)
+                    {
+                        zoom =7;
+                    }
+                    var lat = {!Store_Location__c.Location__Latitude__s};
+                    var lng = {!Store_Location__c.Location__Longitude__s}
+                    var map = new google.maps.Map(document.getElementById('map'), {
+                        center: {lat, lng},
+                       zoom: zoom
+                     });
+                     
+                    //var address=" <b> Store Name : </b> " + {!Store_Location__c.Name} + '</br>'+ " <b> Street : </b>" + {!Store_Location__c.Street__c} + '</br>'+ " <b> City : </b> " + {!Store_Location__c.City__c} +  '</br>'+ " <b> State : </b> " + {!Store_Location__c.State__c} + '</br>'+ " <b> Country : </b> " + {!Store_Location__c.Country__c};
+                     
+                     //marker for current store
+                     var icon ="green";
+                      icon = "http://maps.google.com/mapfiles/ms/icons/" + icon + ".png";
+                      var marker = new google.maps.Marker({
+                      position: {lat, lng},
+                      map: map,
+                      icon: new google.maps.MarkerImage(icon)
+                     });
+                    console.log('Stloc'+Stloc);
+                    //set marker on individual  nearest location
+                    if(Stloc != undefined )
+                    {
+                        
+                        var infowindow = new google.maps.InfoWindow()
+                        
+                        for(var i=0; i<Stloc.length ; i++)
+                        {
+                            var strSecond = Stloc[i].split(","); 
+                            if(strSecond != '')
+                            {
+                                var lati =strSecond[0];
+                                var lngi = strSecond[1];
+                                console.log('strSecond ::'+strSecond); 
+                                console.log('lat:::'+lati +'lng::'+lngi);
+                                    
+                                    
+                                var marker = new google.maps.Marker 
+                                ({
+                                    map : map,
+                                    position : {lat :parseFloat(strSecond[0]),lng :parseFloat(strSecond[1])}
+                                });
+                                     
+                                     
+                                //InfoWindow of each marker
+                                var street =strSecond[3];
+                                var Ids='';
+                                if(strSecond.length == 8)
+                                {
+                                    Ids =strSecond[7];
+                                }
+                                else
+                                {
+                                    Ids =strSecond[8];
+                                }
+                                var str = "<a href='/"+Ids+"' target="+"_blank>"+strSecond[2]+ "</a>";
+                                var address ='';
+                                console.log('str'+str);
+                                if(street != undefined  && street != null && street !='')
+                                {
+                                    console.log('Street' +street);
+                                    address=" <b> Store Name : </b> " + str + '</br>'+ " <b> Street : </b>" + street + '</br>'+ " <b> City : </b> " + strSecond[4] +  '</br>'+ " <b> State : </b> " + strSecond[5] + '</br>'+ " <b> Country : </b> " + strSecond[6];
+                                }
+                                else if(street == undefined)
+                                {
+                                    var UndefinedStreet = ' ';
+                                    address=" <b> Store Name : </b> " + str + '</br>'+ " <b> Street : </b>" + UndefinedStreet + '</br>'+ " <b> City : </b> " + strSecond[4] +  '</br>'+ " <b> State : </b> " + strSecond[5] + '</br>'+ " <b> Country : </b> " + strSecond[6];
+                                }   
+                                
+                                
+                                google.maps.event.addListener(marker,'click', (function(marker,address,infowindow)
+                                { 
+                                    return function() {
+                                    infowindow.setContent(address);
+                                    infowindow.open(map,marker);
+                                };
+                                }) (marker,address,infowindow));
+                            }
+                        }
+                    }
+                  
+                    //console.log('selectDistance'+selectDistance);
+                    if(selectDistance == null ||selectDistance =='')
+                    {
+                        selectDistance =1;
+                    }
+                    console.log('selectDistance'+selectDistance);
+                    
+                    //Circle of mile
+                    var cityCircle = new google.maps.Circle
+                    ({
+                        strokeColor: '#FF0000',
+                        strokeOpacity: 0.8,
+                        strokeWeight: 2,
+                        fillColor: '#FF0000',
+                        fillOpacity: 0.35,
+                        map: map,
+                        center: {lat, lng},
+                        radius: (selectDistance * 1609.34 )
+                    });
+                    
+                    function clickFunction(conId)
+                    {
+                    console.log('conId'+conId);
+                        window.top.location.href = "/" + conId;
+                    }
+                
+                  // Try HTML5 geolocation.
+                  if (navigator.geolocation) 
+                  {
+                    navigator.geolocation.getCurrentPosition(function(position) 
+                    {
+                      var pos = 
+                      {
+                        lat: position,
+                        lng: position
+                      };
+                      console.log(pos);
+                      
+                      map.setCenter(pos);
+                    }, function() {
+                      handleLocationError(true, infoWindow, map.getCenter());
+                    });
+                    } 
+                    else 
+                    {
+                        // Browser doesn't support Geolocation
+                        handleLocationError(false, infoWindow, map.getCenter());
+                    }
+                }
+                
+                function handleLocationError(browserHasGeolocation, infoWindow, pos) 
+                {
+                  infoWindow.setPosition(pos);
+                  console.log('3');
+                  infoWindow.setContent(browserHasGeolocation ?
+                                        'Error: The Geolocation service failed.' :
+                                         'Error: Your browser doesn\'t support geolocation.');
+                }
+             </script>
+        </apex:outputpanel>
+    </apex:form>
+    
+    <div id="map"></div>
+    <script 
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWNXTAd7eOjnLAyEFkBmUobFi8xb6sTQM&callback=initMap">
+    </script>
+    
+    <script>
+        checkMap();
+    </script>
+</apex:page>

@@ -1,0 +1,37 @@
+<apex:page Controller="AcountContacttaskController">
+    <apex:form >
+        <script>
+            function editrecord(RecordId){
+                var rdId =ReordId;
+                edit(rdId);
+            }
+            function Deleterecord(RecordId){
+                delete(RecordId);
+            }
+        </script> 
+        <apex:pageblock >
+            <apex:actionFunction action="EditContact" name="edit">
+                <!--<apex:param name="par1" value="{!editReordId}"/> -->
+            </apex:actionFunction>
+            <apex:actionFunction action="deleteContact" name="delete">
+                <!--<apex:param name="par2" value="{!deleteReordId}"/> -->
+            </apex:actionFunction>
+            <apex:inputField value="{!con.AccountId}"/> 
+            <apex:commandButton value="GetContacts" action="{!ContactsOFAccount}"/> 
+            <apex:pageBlockSection >
+                <apex:pageblocktable value="{!listOFContacts}" var="test" Style="height:100%,width:100%">
+                     <apex:column >
+                         <apex:commandbutton value="Edit" onclick=" editrecord('{!test.Id}')"/>
+                     </apex:column>
+                      <apex:column >
+                         <apex:commandbutton value="Delete" onclick="Deleterecord('{!test.Id}')"/>
+                     </apex:column>
+                     <apex:column value="{!test.name}"/>
+                     <apex:column value="{!test.Email}"/>
+                     <apex:column value="{!test.Phone}"/>
+                </apex:pageblocktable>
+            </apex:pageBlockSection>
+        </apex:pageblock>      
+    </apex:form>
+ 
+</apex:page>

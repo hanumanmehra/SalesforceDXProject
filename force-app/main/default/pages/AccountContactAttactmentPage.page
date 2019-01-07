@@ -1,0 +1,133 @@
+<apex:page standardController="Account" extensions="AccountContactAttactmentController" docType="HTML-5.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        
+    <script type="text/javascript">
+        var __sfdcSessionId = '{!GETSESSIONID()}';
+    </script>
+    <script src="/soap/ajax/29.0/connection.js" type="text/javascript"></script>
+        
+    <apex:form >
+        <apex:pageblock > 
+            <div id="drop_zone" >
+                <apex:pageblocktable value="{!contactlist}" var="item"> 
+                    <apex:column value="{!item.Name}" onmouseover="mounseOverCalling('{!item.Id}')"></apex:column>
+                    <apex:column value="{!item.Title}"  onmouseover="mounseOverCalling('{!item.Id}')"></apex:column>
+                    <apex:column value="{!item.Department}" onmouseover="mounseOverCalling('{!item.Id}')"></apex:column>
+                    <apex:column value="{!item.CleanStatus}" onmouseover="mounseOverCalling('{!item.Id}')"></apex:column>
+                </apex:pageblocktable>
+            </div>
+            <output id="list"></output>
+        </apex:pageblock>
+    </apex:form>    
+    <script>
+        var globalParentId = '';
+        function mounseOverCalling(pId)
+        {
+            alert(pId);
+            globalParentId  = pId
+        }
+        function handleFileSelect(evt) 
+        {
+            console.log('handleFileSelect');
+            evt.stopPropagation();
+            evt.preventDefault();
+
+            var files = evt.dataTransfer.files; // FileList object.
+            alert('files :::::'+files );
+            console.log('files ::'+files);
+
+            // files is a FileList of File objects. List some properties.
+            var output = [];
+             for (var i = 0, f; f = files[i]; i++) 
+             {
+                var reader = new FileReader();     
+
+                // Keep a reference to the File in the FileReader so it can be accessed in callbacks
+                reader.file = f; 
+
+                reader.onerror = function(e) 
+                {
+                     switch(e.target.error.code) 
+                        {
+                            case e.target.error.NOT_FOUND_ERR:
+                            alert('File Not Found!');
+                            break;
+                            case e.target.error.NOT_READABLE_ERR:
+                            alert('File is not readable');
+                            break;
+                            case e.target.error.ABORT_ERR:
+                            break; // noop
+                            default:
+                            alert('An error occurred reading this file.');
+                        };
+                };     
+
+                reader.onabort = function(e) 
+                {
+                    alert('File read cancelled');
+                };
+        
+
+                reader.onload = function(e) 
+                {
+                    var att = new sforce.SObject("Attachment");
+                    att.Name = this.file.name;
+                    att.ContentType = this.file.type;
+                    if(globalParentId != null && globalParentId != 'undefined')
+                        att.ParentId = globalParentId;
+        
+                    att.Body = (new sforce.Base64Binary(e.target.result)).toString();
+        
+                    sforce.connection.create([att],
+                    {
+                        onSuccess : function(result, source) 
+                        {
+                            if (result[0].getBoolean("success")) 
+                            {
+                                console.log("new attachment created with id " + result[0].id);
+                            } 
+                            else 
+                            {
+                               console.log("failed to create attachment " + result[0]);
+                            }
+                        }, 
+                        onFailure : function(error, source) 
+                        {
+                            console.log("An error has occurred " + error);
+                        }
+                    });
+                };
+        
+                reader.readAsBinaryString(f);
+                output.push('<li><strong>', escape(f.name), '</strong> (', f.type || 'n/a', ') - ',
+              
+                          f.size, ' bytes, last modified: ',
+                          f.lastModifiedDate ? f.lastModifiedDate.toLocaleDateString() : 'n/a',
+                          '</li>');
+                         console.log('Name : :'+f.name);
+                         console.log('output : :'+output);
+                         console.log('body of file::'+f.body);
+                }
+                console.log(output);
+            
+                 //CalltoController(output);
+                 document.getElementById('list').innerHTML = '<ul>' + output.join('') + '</ul>';
+            }
+        
+            function handleDragOver(evt) 
+            {
+                console.log('handleDragOver');
+                evt.stopPropagation();
+                evt.preventDefault();
+                evt.dataTransfer.dropEffect = 'copy'; // Explicitly show this is a copy.
+            }
+        
+            // Setup the dnd listeners.
+            var dropZone = document.getElementById('drop_zone');
+            Console.log('dropZone'+dropZone);
+            dropZone.addEventListener('dragover', handleDragOver, false);
+            dropZone.addEventListener('drop', handleFileSelect, false);
+   </script>    
+</apex:page>

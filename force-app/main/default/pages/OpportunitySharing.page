@@ -1,0 +1,18 @@
+<apex:page >
+  <!-- 
+  <apex:page standardController="Opportunity_SFDC__c"  extensions="OpportunitySharingController">
+    
+    <apex:form>
+        <apex:pageBlock title="User and Group Sharing">
+            <apex:pageBlockTable  value="{!allShareOppootunityList }" var="oppShare">
+                <apex:column value="{!oppShare.UserOrGroup.Name}"/>
+                 <apex:column value="{!oppShare.UserOrGroup.Type}"/>
+                <apex:column value="{!oppShare.AccessLevel}" headerValue="Access Level" />
+                <apex:column value="{!oppShare.RowCause }" headerValue="Reason"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+  
+</apex:page>
+   -->
+</apex:page>

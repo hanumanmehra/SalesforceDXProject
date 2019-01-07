@@ -1,0 +1,59 @@
+<apex:page StandardController="Account" Sidebar="false" showHeader="true" extensions="NewAccountdetailController">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+      $(document).ready(function(){
+            $("a").on({
+                mouseenter: function(){
+                $("#"+$(this).attr("class")).show();
+            },
+            mouseleave: function(){
+                $("#"+$(this).attr("class")).hide();
+            }
+            });
+        });
+    </script>
+    
+    <apex:pagemessages /> 
+    <apex:sectionHeader title="{!Account.Name}"/>
+    <apex:outputPanel styleClass="panelclass" style="margin-left: 39%;">
+        <!--<apex:variable var="index" value="{!1}"/>-->
+        <apex:repeat var="ma" value="{!mapOfRelatedObject}">
+            <a id ="con" class ="{!ma}">{!ma}[{!mapOfRelatedObject[ma]}]</a>&nbsp;  | &nbsp;
+            <!--<apex:variable value="{!index+1}" var="index"/> -->
+        </apex:repeat>
+        <div id="Contacts" style="display: none;">
+            <apex:relatedList list="Contacts" />
+        </div>
+        <div id="Opportunities" style="display: none;">
+            <apex:relatedList list="Opportunities" />
+        </div>
+        <div id="Cases" style="display: none;">
+            <apex:relatedList list="Cases" />
+        </div>
+    </apex:outputPanel>
+    <apex:form >
+        <apex:pageBlock mode="maindetail" title="Account detail" tabStyle="Account" id="myId">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!Edit}" value="Edit" reRender="myId" />
+                <apex:commandButton action="{!delete}" value="Delete" reRender="myId" />   
+                <apex:commandButton action="{!CancelData}" value="cancel"  />       
+            </apex:pageBlockButtons>
+      
+            <apex:pageblockSection >
+                <apex:outputField value="{!account.name}"/>    
+                <apex:outputField value="{!account.AccountNumber}"/>   
+                <apex:outputField value="{!account.Site}"/>
+                <apex:outputField value="{!account.Ownership}"/>
+                <apex:outputField value="{!account.Phone}"/>                   
+                <apex:outputField value="{!account.shippingCity}"/>
+                <apex:outputField value="{!account.shippingCountry}"/>
+                <apex:outputField value="{!account.shippingStreet}"/>
+                <apex:outputField value="{!account.shippingState}"/>
+                <apex:outputField value="{!account.Type}"/>                                                                                                           
+            </apex:pageblockSection>
+        </apex:pageBlock>
+    </apex:form>
+    <div id ="div1"><apex:relatedList list="Contacts" /></div>
+    <div id ="div2"><apex:relatedList list="Opportunities" /></div>
+    <div id ="div3"><apex:relatedList list="Cases"/></div>
+</apex:page>

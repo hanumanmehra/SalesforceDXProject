@@ -1,0 +1,22 @@
+<apex:page standardController="TaskCs__c" sidebar="false" docType="" tabstyle="TaskCs__c" extensions="taskController"  id="pageId">
+<apex:pagemessages id="tsid"/>
+    <apex:sectionHeader title="Task"/>
+    <apex:form >
+        <apex:pageblock title="New Task">
+            <apex:pageBlockButtons >
+                <apex:commandButton action="{!save}" value="Save" rerender="tsid"/>
+                <apex:commandButton action="{!cancel}" value="Cancel" rerender="tsid"/>
+            </apex:pageBlockButtons>
+            <apex:pageblocksection >
+                <apex:inputField value="{!task.Task_Description__c}"/>
+                <apex:outPutPanel rendered="{!if(TaskCs__c.Id == null,false,true)}">
+                    <span style="margin-left: 25%;">Task Status</span>&nbsp;&nbsp;
+                    <apex:inputField value="{!task.Task_Status__c}" style="margin-left: 4%;" rendered="{!if(TaskCs__c.Task_Status__c == 'Completed',false,true)}" />
+                    <apex:outputfield value="{!task.Task_Status__c}"  style="margin-left: 3%;" rendered="{!if(TaskCs__c.Task_Status__c == 'Completed',true,false)}"/>
+                </apex:outPutPanel>
+                <apex:inputField value="{!task.Cycle_Time__c}" required="true"/>
+                <apex:inputField value="{!task.Assigned_To__c}" required="true"/> 
+            </apex:pageblocksection>
+        </apex:pageblock>
+    </apex:form>
+</apex:page>

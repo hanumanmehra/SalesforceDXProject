@@ -1,0 +1,23 @@
+<apex:page standardController="Account" sidebar="false" docType="HTML-5.0" standardStylesheets="True" tabstyle="Account" id="pagemsgId" extensions="AccountDetailController">
+    
+    <apex:form >
+        <apex:inputtext value="{!inputvalue}" id="check" />
+        <apex:commandButton value="search" action="{!inputmethod}" /> 
+        <apex:pageblock title="Accounts"> 
+        
+        <apex:repeat value="{!acclist}" var="ac">
+                 <apex:pageBlockSection id="section1" columns="2" collapsible="true" title="{!ac.Name}">
+                     <apex:pageblocktable value="{!contactmap[ac]}"  var="con"> 
+                         <apex:column value="{!con.Name}"/>
+                         <apex:column value="{!con.Email}"/>
+                         <apex:column value="{!con.Phone}"/>
+                         <apex:column value="{!con.Account.Name}"/>
+                     </apex:pageblocktable>
+                     
+                 </apex:pageBlockSection>
+         </apex:repeat>
+                
+         </apex:pageblock>
+    </apex:form>
+ 
+</apex:page>

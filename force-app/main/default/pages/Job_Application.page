@@ -1,0 +1,98 @@
+<apex:page standardController="Job__c"  extensions="Job_App">
+	<html lang="en">
+	
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+	    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+		<style>
+			table, th, td {
+			    border: 1px solid black;
+			}	
+		</style>
+		 <style type="text/css"> 
+	      .Class1 {
+	          color:white;
+	          background-color:green;
+	       }
+       
+	       .Class2 {
+	          color:white;
+	          background-color:red ;
+	       }
+	       .Class3 {
+	          color:white;
+	          background-color:organge ;
+	       }
+    	</style>
+    
+		<apex:pageblock >
+			<table class="table table-striped">
+				
+				<apex:repeat value="{!wraplist}" var="wrli">
+				<thead> 
+					<tr>
+						<th>Job &nbsp;:&nbsp;{!wrli.wrapjob.name}</th>
+						<th>Qualification &nbsp;:&nbsp;{!wrli.wrapjob.Qualification__c}</th> 
+						<th>Spoken_lang &nbsp;:&nbsp;{!wrli.wrapjob.Spoken_Language__c}</th>
+						<th>Technical_lang &nbsp;:&nbsp;{!wrli.wrapjob.Technical_Language__c}</th>
+<!-- 						<th>Experience &nbsp;:&nbsp;{!wrli.wrapjob.Experience__c}</th> -->
+<!-- 					<th>Score:</th> -->
+					</tr>
+					
+				</thead>  
+					<apex:repeat value="{!wrli.wrapjob.Job_Applications__r}" var="jobli">
+						<tr>
+							<td>{!jobli.name}</td>
+							<td>
+								<table >
+									<tr>
+										<td >
+											<apex:repeat value="{!mapofquali}" var="qs">
+												<td  styleClass="{!IF(mapofquali[qs] == 'green','Class1', IF(mapofquali[qs] == 'red','Class2', 'Class3'))}">{!qs}</td>
+											</apex:repeat>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td> 
+								<table>
+									<tr>
+										<td>
+											<apex:repeat value="{!mapofspkon}" var="ss">
+												<td styleClass="{!IF(mapofspkon[ss] == 'green','Class1', IF(ss == 'red','Class2', 'Class3'))}">{!ss}</td>
+										    </apex:repeat>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>
+										<td>
+										 	<apex:repeat value="{!mapoftech}" var="ts">
+										    	<td styleClass="{!IF(mapoftech[ts] == 'green','Class1', IF(ts == 'red','Class2', 'Class3'))}">{!ts}</td>
+										    </apex:repeat>
+										    </td>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td>
+								<table>
+									<tr>
+										<td>
+										 	<apex:repeat value="{!mapofexp}" var="es">
+										   		<td styleClass="{!IF(mapofexp[es] == 'green','Class1', IF(es == 'red','Class2', 'Class3'))}">{!es}</td>
+										   </apex:repeat>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</apex:repeat>
+				</apex:repeat>
+		</table>
+	</apex:pageblock>
+ </html>
+</apex:page>

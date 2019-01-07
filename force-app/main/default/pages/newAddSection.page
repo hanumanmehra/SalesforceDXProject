@@ -1,0 +1,21 @@
+<apex:page controller="TestController">
+
+    <apex:form >
+
+        <apex:commandButton value="Add Section" reRender="sectionsPanel" action="{!addSection}" />
+
+        <apex:outputPanel id="sectionsPanel">
+            <apex:repeat value="{!lstSections}" var="section">
+
+                <apex:pageBlock title="PageBlock">
+                    <apex:pageBlockSection title="PageBlockSection">
+                        <apex:pageBlockSectionItem >Do Something Here</apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                </apex:pageBlock>
+
+            </apex:repeat>
+        </apex:outputPanel>
+
+    </apex:form>
+
+</apex:page>

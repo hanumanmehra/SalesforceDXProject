@@ -1,0 +1,49 @@
+<apex:page controller="Accountcon">
+    <script>
+        function checkMaster(flag, clsName){
+            var checkboxes = document.getElementsByClassName(clsName);
+            console.log(checkboxes);
+            for(var i = 0; i < checkboxes.length; i++){
+                 checkboxes[i].checked = flag;
+            }
+        }
+    </script>
+    <apex:form id="frm">
+        <apex:actionFunction name="fillData" action="{!fillData}" status="status" reRender="frm"/>
+        
+        <apex:outputLabel value="Please select account: " style="font-weight:bold;"/> &nbsp;&nbsp;
+        <apex:inputField value="{!con.AccountId}" onchange="fillData()"/> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <apex:commandButton value="Clone" action="{!cloneData}" status="status" reRender="frm"/>
+        <br/><br/>
+        
+        <apex:actionStatus startText="Pleae wait..." id="status"/>
+        
+        <apex:pageBlock id="pgb" title="Contacts">
+            <apex:pageBlockTable value="{!listCon}" var="mod">
+                <apex:column >
+                    <apex:facet name="header">
+                        <input type="checkbox" class="masterchk" onclick="checkMaster(this.checked,'childchk')"/>
+                    </apex:facet>
+                    <apex:inputCheckbox value="{!mod.isCheck}" styleClass="childchk"/>
+                </apex:column>
+                <apex:column value="{!mod.con.Name}"/>
+                <apex:column value="{!mod.con.Email}"/>
+                <apex:column value="{!mod.con.Phone}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+        
+        <apex:pageBlock id="pgb2" title="Opportunities">
+            <apex:pageBlockTable value="{!listOp}" var="mod">
+                <apex:column >
+                    <apex:facet name="header">
+                        <input type="checkbox" class="masterchk2" onclick="checkMaster(this.checked,'childchk2')"/>
+                    </apex:facet>
+                    <apex:inputCheckbox value="{!mod.isCheck}" styleClass="childchk2"/>
+                </apex:column>
+                <apex:column value="{!mod.opp.Name}"/>
+                <apex:column value="{!mod.opp.StageName}"/>
+                <apex:column value="{!mod.opp.CloseDate}"/>
+            </apex:pageBlockTable>
+        </apex:pageBlock>
+    </apex:form>
+</apex:page>

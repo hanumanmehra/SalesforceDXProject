@@ -1,0 +1,124 @@
+<apex:page >
+  <!-- <apex:page StandardController="Lead" extensions="ConvertLeadController" doctype="HTML-5.0" standardStylesheets="true">
+     <apex:sectionHeader title="Convert Lead" subtitle="{!Lead.Name}"/>
+     Leads can be converted to accounts, contacts, opportunities, and followup tasks.<br/>
+     You should only convert a lead once you have identified it as qualified.<br/>
+     After this lead has been converted, it can no longer be viewed or edited as a lead, but can be viewed in lead reports.<br/><br/>
+
+    <style type="text/css">
+        input.hiddenInput 
+        {
+            width:0;
+            height:0;
+            border:0;
+            padding:0;
+            margin:0;
+        }
+        
+        .leadTab .tertiaryPalette, .individualPalette .leadBlock .tertiaryPalette, .layoutEdit .individualPalette .leadBlock .tertiaryPalette {
+        background-color: #faebd5;
+        border-color: #ebaf59;
+        color: black!important;
+    }
+    </style>
+    <apex:form >
+        <apex:outputPanel id="mainpanel">
+        <apex:pageBlock rendered="{!if(checkSelAccount == false,true,false)}">
+            <apex:pageblockButtons >
+                <apex:commandButton value="Convert" action="{!convertLeadRelatedAccountContacts}" reRender="outputpanId,mainpanel"/>
+                <apex:commandButton value="Cancel" action="{!cancelConvertLead}"  reRender="none"/>
+            </apex:pageblockButtons>
+            <apex:pageblockSection title="Convert Lead" collapsible="false" columns="1">
+                <apex:pageBlockSectionItem >
+                    <apex:outputLabel value="Record Owner" for="recordOwner" />
+                    <apex:inputField value="{!contactID.OwnerId}" id="recordOwner" />
+                </apex:pageBlockSectionItem>    
+            <apex:pageBlockSectionItem >
+                <apex:outputLabel value="Send Email to the Owner" for="sendOwnerEmail" />
+                <apex:inputCheckbox value="{!sendOwnerEmail}" id="sendOwnerEmail" />
+            </apex:pageBlockSectionItem>
+                
+           <apex:pageBlockSectionItem id="convertLeadAccountBlockSectionItem" >
+                <apex:outputLabel value="Account Name" for="accountList" />
+                    <apex:outputPanel styleClass="requiredInput" id="block">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList value="{!selectedAccount}" size="1" 
+                            multiselect="false" id="accountList">
+                            <apex:actionSupport event="onchange" 
+                                action="{!accountChanged}" 
+                                rerender="opportunityName, ViewLink"
+                                 />     
+                            <apex:selectOptions value="{!accounts}"/>   
+                        </apex:selectList>
+                        
+                        <apex:inputField styleClass="hiddenInput" 
+                        value="{!con.AccountId}" id="accountId" >
+                                                       
+                            <apex:actionSupport event="onchange" 
+                                action="{!accountLookedUp}" 
+                                rerender="accountList, opportunityName"
+                                 />       
+                        </apex:inputField>
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
+                    <apex:outputPanel id="oppPanel" >
+                        <apex:outputLabel value="Opportunity Name" for="opportunityName" />
+                    </apex:outputPanel>
+                    
+                    <apex:outputPanel id="opportunityPanel" layout="block">
+                        <apex:outputPanel rendered="{!NOT(doNotCreateOppty)}" styleClass="requiredInput" id="block">
+                            <div class="requiredBlock"></div>
+                            <apex:inputText id="opportunity" value="{!Company}" required="true" />
+                        </apex:outputPanel>
+                          
+                        <apex:inputText disabled="true" rendered="{!doNotCreateOppty}"  value="{!Company}" id="opportunityNameDisabled"/>
+                        <apex:outputPanel layout="block" styleClass="requiredInput">
+                        <apex:outputPanel layout="block" />
+                        
+                        <apex:inputCheckbox value="{!doNotCreateOppty}" id="doNotCreateOppty">
+                            <apex:actionSupport event="onchange" rerender="opportunityPanel"/>
+                        </apex:inputCheckbox>
+                        Do not create a new opportunity upon conversion.
+                    </apex:outputPanel> 
+                    </apex:outputPanel>  
+                 </apex:pageBlockSectionItem>
+                 
+                <apex:pageBlockSectionItem>
+                    <apex:outputLabel value="Converted Status" for="leadStatus" />
+                    <apex:outputPanel styleClass="requiredInput" layout="block">
+                        <div class="requiredBlock"></div>
+                        <apex:selectList id="LeadStatusList" size="1" 
+                            value="{!currLead.Status}" multiselect="false" required="true">
+                            <apex:selectOptions value="{!LeadStatusOption}"/>
+                        </apex:selectList> 
+                    </apex:outputPanel>
+                </apex:pageBlockSectionItem>  
+            </apex:pageblockSection>
+        </apex:pageBlock>
+        </apex:outputPanel>
+        
+        <apex:outputPanel id="outputpanId" >
+            <apex:pageBlock id="pgblockId" rendered="{!checkSelAccount}">
+                <apex:pageblockButtons >
+                    <apex:commandButton value="Convert" action="{!convertLeadRecord}" reRender="none"/>
+                    <apex:commandButton value="Cancel" action="{!cancelConvertLead}"  reRender="none"/>
+                </apex:pageblockButtons>
+                <apex:pageBlockSection collapsible="false" columns="1" title="Convert Lead">
+                    <apex:pageBlockSectionItem >
+                         <apex:outputLabel value="Account Name" for="leadStatus" style="padding-left: 102px;font-weight: bold;"/>
+                         <apex:outputfield value="{!acc.Name}"/>
+                    </apex:pageBlockSectionItem> 
+                    <apex:pageBlockSectionItem >
+                            <apex:outputLabel value="Contact Name" for="leadStatus" style="padding-left: 105px;font-weight: bold;font-size: 100%;" /> 
+                            <apex:selectList id="LeadStatusList" size="1"  
+                                    value="{!selectedContact}" multiselect="false" required="true">
+                                    <apex:selectOptions value="{!ContactOption}"/>
+                            </apex:selectList>
+                    </apex:pageBlockSectionItem>
+                </apex:pageblockSection>
+            </apex:pageBlock>
+        </apex:outputPanel>
+    </apex:form>
+</apex:page> -->
+</apex:page>

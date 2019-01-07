@@ -1,0 +1,111 @@
+<apex:page controller="TwitterIntegration">  
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.1/jquery.min.js"></script>
+	
+	 <script>
+        function frndreq(sel) 
+        {
+        	//alert(sel);
+            var r=confirm("Are you sure to send request?");
+            if(r==true)
+            {
+                funname(sel);
+                //alert(sel);
+            }     
+            else(r==false) 
+            {
+                parent.child.close();  
+            } 
+        }
+        
+        function directmsg(selname) 
+        {
+        	//alert(sel);
+            var r=confirm("Are you sure to send message?");
+            if(r==true)
+            {
+                funname2(selname);
+                //alert(sel);
+            }     
+            else(r==false) 
+            {
+                parent.child.close();
+            } 
+        }
+  	</script>
+
+<apex:form id="frmId">  
+    <apex:pageblock id="pgeId"> 
+    	<apex:pageblocksection Title="Login With Twitter"> 
+    		<apex:commandbutton action="{!requestToken}" value="Twitter Authentication"/> 
+       		<apex:commandbutton action="{!userdetails}" value="userdetails Authentication"/> 
+	    </apex:pageblocksection>
+	       	
+	   	<apex:pageblocksection title="Follower List">
+   			<apex:commandbutton action="{!followerlist}" value="friendlist" style="margin-left: 626px;"/> 
+   			<apex:outputpanel />
+	        	 <apex:repeat value="{!followerMap}" var="fp">
+			        <apex:commandlink value="{!fp}"></apex:commandlink>
+			        <apex:image value="{!followerMap[fp]}"/>  
+		        </apex:repeat>
+	   	</apex:pageblocksection>
+	   	
+	   	
+			<apex:pageblocksection title="New Tweet">
+			  	<apex:inputtextArea value="{!status}"/>
+			   	<apex:commandbutton action="{!postTweet}" value="newtweet"/>
+			</apex:pageblocksection> 
+		 
+<!-- 		<apex:pageblocksection title=" New Tweet Media Upload"> 
+		      	<apex:inputFile value="{!file}" filename="{!filename}" contentType="{!filetype}"/>    
+		        <apex:commandButton value="upload" action="{!updateProfile}"/>
+		</apex:pageblocksection> -->
+		
+		
+		<apex:pageblocksection title="User Profile">
+			<apex:commandbutton action="{!userProfile}" value="Upload Profie"/> 
+			<apex:repeat value="{!userprofile}" var="ur"> 
+			 	<apex:image value="{!ur}"></apex:image> 
+			</apex:repeat>
+		</apex:pageblocksection>      
+    </apex:pageblock> 
+    
+    
+   	<apex:pageblock id="pgId"> 
+	    <apex:actionregion >
+	     	<apex:pageblocksection id="blkid" title="Search New user">
+				<apex:inputtextArea value="{!username}"/>   
+		        <apex:commandbutton action="{!searchUser}" value="searchUser"/> 
+		        <apex:repeat value="{!searchpeople}" var="sp">
+			        <apex:commandlink onclick="frndreq('{!sp}');return false;" value="{!sp}"></apex:commandlink>
+			        <apex:image value="{!searchpeople[sp]}"/>  
+		        </apex:repeat>
+			</apex:pageblocksection> 
+			
+			<apex:actionFunction name="funname" action="{!friendrequest}" rerender="blkid">
+	    		<apex:param name="as" assignto="{!scrnname}" value=""/>
+    		</apex:actionFunction>
+    	</apex:actionregion>
+	</apex:pageblock>
+	
+		<!--  <apex:pageblock title="Direct Message">
+			<apex:actionregion>
+				<apex:pageblocksection  id="blkid2">
+					   		<apex:repeat value="{!searchpeople}" var="sp">
+						        <apex:commandlink value ="{!sp}"></apex:commandlink>
+						        	<apex:inputtextArea value="{!message}"/>
+						        	<apex:commandbutton onclick="directmsg('{!sp}');return false;"  value="send Msg"/> 
+						        <apex:image  value="{!searchpeople[sp]}"/>  
+				       	 	</apex:repeat>
+					   		<apex:inputtextArea value="{!username}"/>   
+					        <apex:commandbutton action="{!searchUser}" value="searchUser"/>
+							 
+							<apex:actionFunction name="funname2" action="{!directmessage}" rerender="blkid2">
+				    			<apex:param name="as2" assignto="{!scrnname}" value=""/>
+			    			</apex:actionFunction>
+				</apex:pageblocksection> 
+			</apex:actionregion>
+		</apex:pageblock>-->
+    
+</apex:form> 
+ 
+</apex:page>

@@ -1,0 +1,165 @@
+<apex:page standardController="Process__c" sidebar="false" docType="HTML-5.0" standardStylesheets="True" tabstyle="Process__c" id="pagemsgId" extensions="ProcessController">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <apex:pagemessages /> 
+    <script>
+        function myconfirm(selid) {
+            var r=confirm("Are you sure?");
+            if(r==true)
+            {
+                funname(selid);
+            }
+            else(r==false)
+            {
+                parent.child.close();
+            } 
+        }
+            
+        function ShowLoading() {
+                document.getElementById('blockbckanim').style.display="block";
+            }
+            
+            function HideLoading()
+            {
+                document.getElementById('blockbckanim').style.display="none";
+            }
+    </script>
+    <script>
+        $(document).ready(function(){
+            $('[data-toggle="tooltip"]').tooltip();   
+        });
+    </script>
+    <style>
+        #blockbckanim {
+            background-color:rgba(196, 204, 220, 0.8);
+            width:100%;
+            height:100%;
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            z-index: 1000;
+            rgba(0, 0, 0, 0.71);
+            cursor: wait;
+        }
+        
+        .spanClass
+        {
+            padding:2px;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-color: none;
+            text-align: center;
+            border-radius: 1px;
+        }
+        
+        $(document).ready(function(){
+            $('[data-toggle="popover"]').popover();   
+        });
+    </style>
+    <div id="blockbckanim" style="display:none">
+        <div id="apimgld"  >
+            <img src="/img/loading32.gif" style="height: 22px;  margin-left: 44%; margin-top: 52px;position: fixed;" />&nbsp;&nbsp;<br/>
+        </div>
+    </div>
+    <apex:sectionHeader title="Process Deatil"/>
+    <apex:form id="frmId">
+        <apex:pageBlock mode="maindetail"  tabStyle="Process__c" id="myId" title="{!Process__c.Name}">
+            <apex:pageBlockButtons >
+                <apex:commandButton value="Edit" reRender="myId" action="{!edit}"/> 
+            </apex:pageBlockButtons>
+            <apex:pageblocksection >
+                <apex:outputField value="{!Process__c.Status__c}"/>
+                <apex:inlineEditSupport showOnEdit="editButton" 
+                    hideOnEdit="editButton" event="ondblclick" 
+                    changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/> 
+                <apex:outputField value="{!Process__c.Start_Date__c}"/>
+                <apex:inlineEditSupport showOnEdit="editButton" 
+                    hideOnEdit="editButton" event="ondblclick" 
+                    changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/> 
+                <apex:outputField value="{!Process__c.Description__c}"/>
+                <apex:inlineEditSupport showOnEdit="editButton" 
+                    hideOnEdit="editButton" event="ondblclick" 
+                    changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+                <apex:outputField value="{!Process__c.End_Date__c}"/>
+                <apex:inlineEditSupport showOnEdit="editButton" 
+                    hideOnEdit="editButton" event="ondblclick" 
+                    changedStyleClass="myBoldClass" resetFunction="resetInlineEdit"/>
+            </apex:pageblocksection>
+        </apex:pageBlock>
+        <apex:actionStatus id="as2" onStart="ShowLoading();" onstop="HideLoading();"/>
+        <apex:actionStatus id="as3" onStart="ShowLoading()"/> 
+        <apex:pageblock id="tskblkId" title="Related Tasks">
+            <apex:pageblocksection >
+                 <apex:outputPanel rendered="{!if(process.TaskCs__r.size<=0,true,false)}" style="float:left">
+                    <apex:outputText value="No records to display."></apex:outputText>
+                </apex:outputPanel>
+            </apex:pageblocksection>
+            <apex:commandButton value="New Task"  action="{!newtask}" style="float: left;margin-left: 46%;" status="as3"/>    
+            <apex:variable value="{!1}" var="count"/>
+            <apex:outputPanel rendered="{!if(process.TaskCs__r.size<=0,false,true)}">
+                <apex:pageblocktable value="{!process.TaskCs__r}" var="ts"  id="pgTable">
+                    <apex:column headervalue="Action">
+                        <apex:outputLink title="" value="/apex/Taskpage?id={!ts.Id}" style="color:blue">Edit </apex:outputLink>&nbsp; | &nbsp; 
+                        <apex:commandLink id="cmdId" onclick="myconfirm('{!ts.Id}'),alert('{!ts.Id}')" value="Del" style="color:blue" reRender="frmId" />
+                    </apex:column>
+                    <apex:column headervalue="Sequence">
+                        {!ts.Sequence__c}
+                        <apex:outputPanel rendered="{!if(ts.Sequence__c == process.Sequence_Count__c || ts.Sequence__c ==1 ||ts.Task_Status__c!='Assigned' ,false,true )}"><!-- rendered="{!BEGINS(sortField,'Sequence')}" -->
+                        &nbsp;<apex:commandLink action="{!toggleSort}" rerender="pgTable" status="as2"> 
+                                  <apex:image value="/img/arrowDown.gif" id="dwId"/>
+                                  <apex:param name="sortField" value="{!ts.Sequence__c}" assignTo="{!sortField}"/>
+                              </apex:commandLink>
+                        </apex:outputPanel>
+                        <apex:outPutPanel rendered="{!if(ts.Sequence__c == 1 || ts.Task_Status__c!='Assigned',false,true)}">
+                            &nbsp;<apex:commandLink action="{!toggleSortup}" rerender="pgTable" status="as2"> 
+                                        <apex:image value="/img/arrowUp.gif"  id="upId"/>
+                                        <apex:param name="sortFieldup" value="{!ts.Sequence__c}" assignTo="{!sortFieldup}"/>     
+                                  </apex:commandLink> 
+                        </apex:outPutPanel>   
+                    </apex:column> 
+                    <apex:column />
+                    <apex:column headervalue="Name" value="{!ts.Name}"/>
+                    <apex:column value="{!ts.Assigned_To__c}"/>
+                    <apex:column value="{!ts.Task_Status__c}"/>
+                    <apex:column value="{!ts.Cycle_Time__c}"/>
+                    <apex:column value="{!ts.Start_date__c}"/>
+                    <apex:column value="{!ts.End_date__c}"/> 
+                </apex:pageblocktable>
+            </apex:outputPanel>
+            <apex:actionFunction name="funname" action="{!deletetsk}"  reRender="frmId" status="as2">
+                <apex:param name="as" assignto="{!selectid}" value=""/>
+            </apex:actionFunction>
+        </apex:pageblock>     
+        <apex:pageblock >
+            <div class="container" style="overflow-x: scroll;">       
+                <table class="table" width="100%" >
+                    <h2>Task Calender</h2> 
+                    <thead>
+                        <tr>
+                            <th><span Style="padding: 8px; font-weight: bold; border: 1px solid;border-color: black; background-color: lightblue;border-radius: 3px;">Assign To</span></th>
+                            <apex:repeat value="{!listofdate}" var="dat">
+                                 <th ><span Style="padding: 5px; font-weight: bold; border: 1px solid;border-color: black; background-color: lightblue;border-radius: 3px;">{!dat}</span></th>
+                            </apex:repeat>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <apex:repeat value="{!mapoflst}" var="maptas">
+                            <tr class="success">
+                                <apex:repeat value="{!mapofassign[maptas]}" var="as">
+                                    <td>{!as}</td>
+                                </apex:repeat>
+                                <apex:repeat value="{!mapoflst[maptas]}" var="Item">
+                                    <td class="spanClass" style="background-color: {!mapoflst[maptas][Item].color} ; border-radius: 28px;" colspan ="{!mapoflst[maptas][Item].colSpan} "><a data-html="true" data-toggle="tooltip" title="<p align='left'>Task Name : {!mapoflst[maptas][Item].task.Name} <br> Assigned to : {!mapoflst[maptas][Item].task.Assigned_To__r.Name} <br> Cycle Time : {!mapoflst[maptas][Item].task.Cycle_Time__c} <br> Status : {!mapoflst[maptas][Item].task.Task_Status__c} <br> Start Date : {!mapoflst[maptas][Item].stdate} <br> End Date : {!mapoflst[maptas][Item].eddate}</p>" style="color:white;">{!mapoflst[maptas][Item].task.name}</a></td> 
+                                </apex:repeat>
+                            </tr>  
+                        </apex:repeat> 
+                    </tbody>
+                </table>          
+            </div>
+        </apex:pageblock>
+    </apex:form>
+    </html>                 
+</apex:page>

@@ -1,0 +1,161 @@
+<apex:page >
+  <!--<apex:page standardController="Account" extensions="ReferenceFormController" showHeader="false" sidebar="false" >
+    <apex:sectionHeader subtitle="Reference -Form" title="ROYAL"/>
+    <style>
+        .input{
+            margin-left: 20px;
+            display: inline-block;
+            padding: 30px;
+        }
+        .section{
+                width: 200%;
+                border: 1px solid;
+                background-color: black;
+        }
+    </style>
+    <apex:form >
+        <apex:pageBlock title="Reference -Form">
+            <div style="margin-left: 15px;">
+               
+                <apex:outputLabel value="Name">
+                    <apex:inputField value="{!referenceRecord.Name}"/>
+                </apex:outputLabel>
+                <apex:outputLabel value="Title" styleClass="input">
+                    <apex:inputField value="{!referenceRecord.Title__c}" />
+                </apex:outputLabel><br></br>
+                <apex:outputLabel value="Address">
+                    <apex:inputField value="{!referenceRecord.Address__c}"/>
+                </apex:outputLabel>
+                <apex:outputLabel value="City" styleClass="input">
+                    <apex:inputField value="{!referenceRecord.City__c}" />
+                </apex:outputLabel><br></br>
+                <apex:outputLabel value="State">
+                    <apex:inputField value="{!referenceRecord.State__c}"/>
+                </apex:outputLabel>
+                <apex:outputLabel value="Zip Code" styleClass="input">
+                    <apex:inputField value="{!referenceRecord.Zip_Code__c}" />
+                </apex:outputLabel><br></br>
+                <apex:outputLabel value="Telephone">
+                    <apex:inputField value="{!referenceRecord.Telephone__c}"/>
+                </apex:outputLabel><br></br> <br></br> 
+                
+            <div style="background:white; border:1px solid #ddd;padding:20px;font-size:14px;line-height:20px"> I,<apex:inputField value="{!referenceRecord.Name}" style="border-bottom: 1px solid black;border-top:0;border-left:0;
+                padding:0;"/> ,hereby give permisssion to release information 
+                to Royal care concerning my performance and hereby release your organisation from all liablity.<br></br><br></br>
+    
+                <apex:outputLabel value="Social Security " />
+                    <apex:inputField value="{!referenceRecord.SSN_Code__c}" style="border-bottom: 1px solid black;border-top:0;border-left:0;
+                padding:0;"/>
+            </div>
+            <br></br>
+            <div style="background:white; border:1px solid #ddd;padding:20px;font-size:14px;line-height:20px"> The above name applicant has applied for employment with our agency as a blank 
+                and has submitted your Name as a reference.A self addressed stamped envelope is enclosed for
+                for your convenience.A prompt response is appreciated.All information will be kept confidential.<br></br>
+                                    <br></br>Sincerely,
+                                    <br></br>
+            </div>
+            <div style="background:white; border:1px solid #ddd;padding:20px;font-size:14px;line-height:20px">
+                <apex:pageBlockSection >
+                    <apex:pageBlockSectionItem >
+                        Position held
+                        <apex:inputField value="{!referenceRecord.Position_held__c}"/>
+                    </apex:pageBlockSectionItem>
+                    <apex:pageBlockSectionItem >
+                        Date Employed :From
+                        <apex:pageBlockSectionItem >
+                            <apex:inputField value="{!referenceRecord.Date_Employed_From__c}"/>
+                            <apex:pageBlockSectionItem ><b>To</b>&nbsp;   <apex:inputField value="{!referenceRecord.Date_Employed_To__c}"/> </apex:pageBlockSectionItem>
+                            </apex:pageBlockSectionItem> 
+                        </apex:pageBlockSectionItem>
+                    </apex:pageBlockSection>
+                    <apex:pageBlockSection >
+                        <apex:inputField value="{!referenceRecord.Comments__c}" label="Comments" style="width: 50%;"/>
+                        <apex:inputField value="{!referenceRecord.Reason_For_Leaving__c}" label="Reason for leaving"  style="width: 50%;"/>
+                    </apex:pageBlockSection>
+
+                    <apex:outputLabel value="Would You Hire?" style="margin-left: 165px;"/> Yes
+                    <apex:inputCheckbox value="{!referenceRecord.Would_You_Hire__c}">                        
+                        <apex:actionSupport event="onchange" action="{!hireBooleanMethod}"/> 
+                    </apex:inputCheckbox>
+           
+                    <apex:outputPanel rendered="{!if(hireBoolean == false,true,false)}">
+                        <apex:outputLabel value="No"/>
+                        <apex:inputCheckbox value="{!referenceRecord.No_Hire__c}">
+                            <apex:actionSupport event="onchange" action="{!noHireBooleanMethod}"/> 
+                        </apex:inputCheckbox>
+                        <apex:outputPanel rendered="{!if(NoHireBoolean == True,true,false)}"> 
+                            If No, Please comments below
+                            <apex:outputLabel />
+                            <apex:inputField value="{!referenceRecord.No_Hire_Comments__c}"/>
+                        </apex:outputPanel>
+                    </apex:outputPanel>
+                    <apex:pageblockSection >
+                        <apex:inputField value="{!referenceRecord.Final_Title__c}" label="Title"/>
+                        <apex:inputField label="Date" value="{!referenceRecord.Final_Date__c}" style="margin-left: 20px;display: inline-block;padding: 3px;"/>
+                    </apex:pageblockSection>
+                </div>
+                <div style="background:white; border:1px solid #ddd;padding:20px;font-size:12px;line-height:20px">
+                    <apex:pageBlockSection title="Employment Experience" id="empDetailId"   >
+                        <apex:variable var="index" value="{!1}"/>
+                        <apex:variable var="rowNum" value="{!0}"  />
+                        <apex:repeat value="{!listOfEmployer}" var="lstEmp">
+                        
+                            <apex:inputField value="{!lstEmp.Name}" label="{!index}. Employer Name" style="width: auto;" />
+                            <apex:inputField value="{!lstEmp.Phone__c}" label="Telephone"/>
+                            <apex:pageBlockSectionItem >
+                                Date Employed From 
+                                <apex:pageBlockSectionItem >
+                                    <apex:inputField value="{!lstEmp.Employed_From_Date__c}" label=" Date Employed From"/> 
+                                    <apex:pageBlockSectionItem > <b>To</b>&nbsp; <apex:inputField value="{!lstEmp.Employed_To_Date__c}" label="To"/></apex:pageBlockSectionItem>
+                                </apex:pageBlockSectionItem> 
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >  
+                                Work Performed  <apex:inputField value="{!lstEmp.Work_Performed__c}" label="Work Performed"/>
+                            </apex:pageBlockSectionItem>
+                            
+                            <apex:inputField value="{!lstEmp.Street_Address__c}" label="Street 1"/>
+                            <apex:inputField value="{!lstEmp.Street_Address_2__c}" label="Street 2"/> 
+                            <apex:inputField value="{!lstEmp.City__c}" label="City"/>
+                            <apex:inputField value="{!lstEmp.State__c}" label="State"/>
+                            <apex:inputField value="{!lstEmp.Postal_Code__c}" label="Postal Code"/>
+                            <apex:inputField value="{!lstEmp.Job_Title__c}" label="Job Title"/>
+                            
+                            <apex:pageBlockSectionItem >
+                                Hourly Rate/Salary Starting
+                                <apex:pageBlockSectionItem >
+                                    <apex:inputField value="{!lstEmp.Hourly_Rate_Salary_Starting__c}"/>
+                                    <apex:pageBlockSectionItem > Final&nbsp; <apex:inputField value="{!lstEmp.Hourly_Rate_Salary_Final__c}"/></apex:pageBlockSectionItem>
+                                </apex:pageBlockSectionItem> 
+                            </apex:pageBlockSectionItem>
+                         
+                            <apex:pageBlockSectionItem >  
+                                Supervisor <apex:inputField value="{!lstEmp.Supervisor_Title__c}"/>
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >  
+                                Reason for Leaving<apex:inputField value="{!lstEmp.Reason_for_leaving__c}" />
+                            </apex:pageBlockSectionItem>
+                            <apex:pageBlockSectionItem >    
+                                Can be contacted <apex:inputField value="{!lstEmp.Can_be_contacted__c}"  />
+                            </apex:pageBlockSectionItem>
+                            <br/>
+                            <br/>   
+                            <div class="section"></div>  
+                            <apex:variable value="{!index+1}" var="index"/>
+                        </apex:repeat>
+                    </apex:pageBlockSection>
+                </div>
+                <div>
+                    <apex:commandButton value="Add New Employer" action="{!addNew}" rerender="empDetailId" style="margin-left: 591px;"/>
+                    <apex:commandButton value="Delete Last Employer" action="{!delRow}" rerender="empDetailId"/>
+                </div>
+           
+                <apex:pageBlockButtons >    
+                    <apex:commandButton value="Save " action="{!saveReferenceData}" dir="center"/>
+                    <apex:commandButton value="Cancel" action="{!cancel}" dir="center"/>
+                </apex:pageBlockButtons>    
+            </div>   
+        </apex:pageBlock>
+    </apex:form> 
+</apex:page>
+  -->
+</apex:page>

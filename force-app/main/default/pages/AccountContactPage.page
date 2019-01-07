@@ -1,0 +1,71 @@
+<apex:page sidebar="false" Controller="AccountContactController">
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    
+    <script>
+        function contactsofAc(accId,index){
+            alert('accId::'+accId +'index ::'+index);
+            var cls="table"+index;
+            console.log('cls:::'+cls +'obj ::'+$('.'+cls).nextAll().hide());
+              //alert($('.'+cls).next().attr());
+             //$("#accoId").next().hide();
+             $('.'+cls).nextAll().hide();
+                  cont(accId);
+        }
+    </script>
+    <apex:form >
+        <apex:actionFunction name="cont" action="{!SelAccountContacts}" rerender="conblockId">
+             <apex:param name="as" assignto="{!selectedAccountId}" value=""/>
+        </apex:actionFunction>
+        <apex:pageBlock title="Accounts" id="accblockId">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>phone</th>
+                        <th>Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <apex:variable var="index" value="{!1}"/>
+                    <apex:repeat value="{!accountlist}" var="acc">
+                        <tr id="myid{!index}" styleClass="table{!index}" onclick="contactsofAc('{!acc.Id}','{!index}')">
+                            <td><apex:outputfield value="{!acc.name}" /></td>
+                            <td><apex:outputfield value="{!acc.Site}"/></td>
+                            <td><apex:outputfield value="{!acc.Type}"/></td>
+                            <td><apex:outputfield value="{!acc.Ownership}"/></td>
+                        </tr>
+                        <apex:variable value="{!index+1}" var="index"/>
+                    </apex:repeat> 
+                    
+                </tbody>  
+            </table> 
+            <apex:pageblockSection id="conblockId"  title="Contacts">
+                <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>phone</th>
+                        <th>Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                   <!-- <apex:variable var="index" value="{!1}"/>-->
+                    <apex:repeat value="{!contactList}" var="con">
+                        <tr>
+                            <td>{!con.name}</td>
+                            <td>{!con.Email}</td>
+                            <td>{!con.Phone}</td>
+                            <td>{!con.Account.Name}</td>
+                        </tr>
+                        <!--<apex:variable value="{!index+1}" var="index"/>-->
+                    </apex:repeat> 
+                    
+                </tbody>  
+            </table>
+            </apex:pageblockSection> 
+        </apex:pageBlock>
+    </apex:form>
+  
+</apex:page>

@@ -1,0 +1,56 @@
+<apex:page standardController="Job__c"  extensions="JobAppController">
+	<style>
+		.spanClass
+		{
+			padding: 3px;
+		    color: white;
+		    font-weight: bold;
+		    border: 1px solid;
+		    border-color: black;
+		}
+	</style>
+	<apex:pageblock >
+		<table width="100%" border="1" cellspacing="5" cellpadding="10">
+			<tr>
+				<th>Job :{!jobName}</th>
+				<th>Qualification :{!jobQualification}</th>
+				<th>Spoken_lang :{!jobSpokenLang}</th>
+				<th>Technical_lang:{!jobTechnicalLang}</th>
+				<th>Experience :{!jobExpList}</th>
+				
+				<th>Score</th>
+			</tr>
+			<apex:repeat value="{!jobApplicationList}" var="item">
+				<tr>
+					<td>{!item.Name}</td>
+					<td>
+						<apex:repeat value="{!item.qualification}" var="qual">
+							<span style="background-color:{!qual.color}" class="spanClass">{!qual.value}</span>
+						</apex:repeat>
+					</td>
+					<td>
+						<apex:repeat value="{!item.spokenLang}" var="spok">
+							<span style="background-color:{!spok.color}" class="spanClass">{!spok.value}</span>
+						</apex:repeat>
+					</td>
+					
+					<td>
+						<apex:repeat value="{!item.techanicalLang}" var="techn">
+							<span style="background-color:{!techn.color}" class="spanClass">{!techn.value}</span>
+						</apex:repeat>
+					</td>
+					
+					<td>
+						<apex:repeat value="{!item.experience}" var="expr">
+							<span style="background-color:{!expr.color}" class="spanClass">{!expr.value}</span>
+						</apex:repeat>
+					</td>
+					
+					<td>
+						<span style="background-color:{!item.score.color}" class="spanClass">{!item.score.value}</span>
+					</td>
+				</tr>
+			</apex:repeat>
+		</table>
+	</apex:pageblock>
+</apex:page>

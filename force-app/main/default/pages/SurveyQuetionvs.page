@@ -1,0 +1,61 @@
+<apex:page controller="SurveyQuestion" sidebar="true" showheader="true" tabstyle="Survey_Question__c" docType="HTML-5.0" id="pageId">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <head>
+            <script> 
+                function ToggleInput2(Idd){
+                    var chx = '';
+                    $(".cls").each(function(){
+                            if($(this).prop("checked"))
+                                chx += ($(this).next().html()+';');
+                                console.log('----hjhjh-'+chx);
+                            });
+                    document.getElementById('pageId:frmid:pgbkId:bksecId:j_id2:1:ibhid').value = chx;
+                    alert('its called');
+                }
+            </script>
+        </head>
+        <apex:form id="frmid">
+            <apex:pageblock id="pgbkId">
+                <apex:CommandButton value="Store" action="{!Storebtn}" style="margin-left: 30%;" immediate="true"/>
+                <apex:pageblocksection id="bksecId">
+                    <apex:repeat value="{!wraplist}" var="listch">
+                        <div id="div1">
+                            {!listch.wrapqc.Name}
+                            <div id="div2">
+                                <apex:outputPanel rendered="{!if(listch.wrapqc.Question_Type__c=='Checkboxes',true,false)}"> 
+                                        <apex:repeat value="{!listch.wrapqc.Survey_Choices__r}" var="lich">
+                                            <br><apex:inputcheckbox id="getChkBoxValues"  onclick="ToggleInput2(this)" styleclass="cls"></apex:inputcheckbox>
+                                                <span>{!lich.Name}</span>                                       
+                                            </br>
+                                        </apex:repeat>
+                                        <apex:inputHidden id="ibhid" value="{!listch.answer}"/>
+                                </apex:outputPanel>                                           
+                                <apex:outputPanel rendered="{!if(listch.wrapqc.Question_Type__c=='Dropdown',true,false)}">
+                                    <apex:selectList value="{!listch.answer}" size="1">                                           
+                                            <apex:selectoptions id="mySelect" value="{!listch.selopt}"/>
+                                    </apex:selectlist> 
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!if(listch.wrapqc.Question_Type__c=='Text',true,false)}">                                
+                                    <apex:input value="{!listch.answer}" type="text" />      
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!if(listch.wrapqc.Question_Type__c=='Date',true,false)}">                                    
+                                    <apex:input value="{!listch.seldate}" type="date" ></apex:input> 
+                                </apex:outputPanel>
+                                <apex:outputPanel rendered="{!if(listch.wrapqc.Question_Type__c=='Time',true,false)}">                                
+                                    <apex:input value="{!listch.seltime}" type="time" ></apex:input> 
+                                </apex:outputPanel> 
+                            </div>
+                        </div>
+                </apex:repeat>
+            </apex:pageblocksection>
+        </apex:pageblock>
+        
+       <apex:actionFunction id="actSta5" name="funans" >
+            <apex:param name="a" assignTo="{!answer}" value=""/>  
+        </apex:actionFunction>       
+      </apex:form>
+    </html>
+</apex:page>

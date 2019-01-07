@@ -1,0 +1,27 @@
+<apex:page controller="SurveyAssign"  showheader="True" sidebar="true"  tabstyle="Survey_Assignment__c">
+    <html xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+        <script>
+             function js1(queId){
+                 filname(queId);
+            }
+        </script> 
+        <apex:form >
+            <apex:pageblock id="blockId">
+            <!--     <apex:Commandbutton value="Store" action="{!Storebtn}"/> -->
+                <apex:pageblocksection >
+                    <apex:pageblocktable value="{!listassign}" var="lias">
+                        <apex:column >
+                            <apex:facet name="header">S.No</apex:facet>{!lias.AssignNumber__c}
+                        </apex:column>
+                        <apex:column ><apex:facet name="header">Assignment Name</apex:facet>
+                            <apex:outputlink value="/apex/SurveyQuetionvs?id={!lias.Id}">{!lias.name}</apex:outputlink>
+                        </apex:column>                  
+                    </apex:pageblocktable>
+                </apex:pageblocksection>
+            </apex:pageblock>
+        </apex:form>
+    </html>
+</apex:page>

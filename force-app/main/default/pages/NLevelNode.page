@@ -1,0 +1,38 @@
+<apex:page sidebar="false" showHeader="true" standardController="Account" >
+<!-- <apex:form >
+   <apex:pageMessages id="log" ></apex:pageMessages>
+</apex:form>
+    <head>
+        <apex:includeScript value="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"/>
+            <apex:includeScript value="{!URLFOR($Resource.treeJquery, '/vakata-jstree-e2596f5/libs/jquery.js')}"/>
+                <apex:includeScript value="{!URLFOR($Resource.treeJquery, '/vakata-jstree-e2596f5/dist/jstree.min.js')}"/>
+                <link rel="stylesheet" href="{!URLFOR($Resource.treeJquery, '/vakata-jstree-e2596f5/dist/themes/default/style.min.css')}" />
+                <c:SharePointFileManagementCSS />
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous" />
+                <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous" />
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+                
+                <apex:includeScript value="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.8/js/jquery.tablesorter.min.js" />
+                <apex:stylesheet value="https://cdnjs.cloudflare.com/ajax/libs/jquery.tablesorter/2.17.8/css/theme.blue.css" />
+               <script>
+                    
+             $( document ).ready(function() {
+                         $('#tree').jstree({
+                              'core' : {
+                                'data' :  {!JsonData}
+                              
+                           }
+                          });
+                     }); 
+                             
+                     
+           </script>
+       </head>
+       
+       <form>
+           <div id="tree">
+             
+            </div>
+                    -
+       </form>-->
+</apex:page>
